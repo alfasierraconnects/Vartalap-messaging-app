@@ -1,6 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { useAuth } from "../appwrite/authContext";
 
 const Login = () => {
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { login } = useAuth();
+
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setLoginData({ ...loginData, [name]: value });
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    if (loginData.email?.trim() === "" || loginData.password?.trim() === "") {
+      console.log("error");
+    } else {
+      // console.log("success");
+      login(loginData);
+    }
+  };
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -9,15 +33,16 @@ const Login = () => {
             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in
             </h1>
-            <form className="space-y-4 md:space-y-6">
+            <form onSubmit={onSubmitHandler} className="space-y-4 md:space-y-6">
               <div>
                 <label
-                  for="email"
+                  htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your email
                 </label>
                 <input
+                  onChange={onChangeHandler}
                   type="email"
                   name="email"
                   id="email"
@@ -28,12 +53,13 @@ const Login = () => {
               </div>
               <div>
                 <label
-                  for="password"
+                  htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
                 <input
+                  onChange={onChangeHandler}
                   type="password"
                   name="password"
                   id="password"
@@ -55,7 +81,7 @@ const Login = () => {
                   </div>
                   <div className="ml-3 text-sm">
                     <label
-                      for="remember"
+                      htmlFor="remember"
                       className="text-gray-500 dark:text-gray-300"
                     >
                       Remember me

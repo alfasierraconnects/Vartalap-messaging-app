@@ -13,7 +13,7 @@ const Signup = () => {
             <form className="max-w-sm mx-auto">
               <div className="mb-5">
                 <label
-                  for="email"
+                  htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your email
@@ -28,15 +28,15 @@ const Signup = () => {
               </div>
               <div className="mb-5">
                 <label
-                  for="password"
+                  htmlFor="password1"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  id="password"
+                  name="password1"
+                  id="password1"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
@@ -44,15 +44,15 @@ const Signup = () => {
               </div>
               <div className="mb-5">
                 <label
-                  for="password"
+                  htmlFor="password2"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Repeat Password
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  id="password"
+                  name="password2"
+                  id="password2"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
@@ -60,7 +60,7 @@ const Signup = () => {
               </div>
               <div className="mb-5">
                 <label
-                  for="phone"
+                  htmlFor="phoneNumber"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Phone number
@@ -85,7 +85,7 @@ const Signup = () => {
                   />
                 </div>
                 <label
-                  for="terms"
+                  htmlFor="terms"
                   className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
                   I agree with the{" "}
