@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { account } from "./appwriteConfig";
+import { ID } from "appwrite";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -44,13 +45,33 @@ const AuthContextProvider = (props) => {
     setLoading(false);
   };
 
-  const userContext = { user, login };
+  const signup = (signupData) => {
+    // console.log(signupData.email, signupData.password1, signupData.phoneNumber);
+    const promise = account.create(
+      ID.unique(),
+      signupData.email,
+      signupData.password1,
+      signupData.phoneNumber
+    );
+
+    promise.then(
+      function (response) {
+        console.log(response); // Success
+        login({ email: signupData.email, password: signupData.password1 });
+      },
+      function (error) {
+        console.log(error); // Failure
+      }
+    );
+  };
+
+  const userContext = { user, login, signup };
 
   return (
     <AuthContext.Provider value={userContext}>
       {loading ? (
-        <div class="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-          <div class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+        <div className="flex items-center justify-center min-h-screen border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+          <div className="px-6 py-2 text-xl font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
             loading...
           </div>
         </div>

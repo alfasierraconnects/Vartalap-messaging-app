@@ -1,8 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
+import { useAuth } from "../appwrite/authContext";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [signupData, setSignupData] = useState({
+    email: "",
+    password1: "",
+    password2: "",
+    phoneNumber: "",
+  });
+
+  const { signup } = useAuth();
+
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setSignupData({ ...signupData, [name]: value });
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    // Trim the input values
+    const trimmedEmail = signupData.email.trim();
+    const trimmedPassword1 = signupData.password1.trim();
+    const trimmedPassword2 = signupData.password2.trim();
+    const trimmedPhoneNumber = signupData.phoneNumber.trim();
+
+    // Check if any of the required fields are empty or passwords don't match
+    if (
+      trimmedEmail === "" ||
+      trimmedPassword1 === "" ||
+      trimmedPassword2 === "" ||
+      trimmedPhoneNumber === "" ||
+      trimmedPassword1 !== trimmedPassword2
+    ) {
+      // Provide validation messages to the user
+      if (trimmedEmail === "") {
+        console.log("Email is required");
+      }
+      if (trimmedPassword1 === "") {
+        console.log("Password is required");
+      }
+      if (trimmedPassword2 === "") {
+        console.log("Confirm password is required");
+      }
+      if (trimmedPhoneNumber === "") {
+        console.log("Phone number is required");
+      }
+      if (trimmedPassword1 !== trimmedPassword2) {
+        console.log("Passwords do not match");
+      }
+    } else {
+      // If validation passes, call the signup function
+      signup(signupData);
+    }
+  };
+
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <div className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -10,7 +66,7 @@ const Signup = () => {
               Register new account
             </h1>
 
-            <form className="max-w-sm mx-auto">
+            <form onSubmit={onSubmitHandler} className="max-w-sm mx-auto">
               <div className="mb-5">
                 <label
                   htmlFor="email"
@@ -19,8 +75,10 @@ const Signup = () => {
                   Your email
                 </label>
                 <input
+                  onChange={onChangeHandler}
                   type="email"
                   id="email"
+                  name="email"
                   className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   placeholder="name@email.com"
                   required
@@ -34,6 +92,7 @@ const Signup = () => {
                   Password
                 </label>
                 <input
+                  onChange={onChangeHandler}
                   type="password"
                   name="password1"
                   id="password1"
@@ -50,6 +109,7 @@ const Signup = () => {
                   Repeat Password
                 </label>
                 <input
+                  onChange={onChangeHandler}
                   type="password"
                   name="password2"
                   id="password2"
@@ -66,6 +126,7 @@ const Signup = () => {
                   Phone number
                 </label>
                 <input
+                  onChange={onChangeHandler}
                   type="phoneNumber"
                   name="phoneNumber"
                   id="phoneNumber"
@@ -106,19 +167,19 @@ const Signup = () => {
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?
-                  <a
-                    href="/"
+                  <Link
+                    to="/login"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-2"
                   >
                     Log in
-                  </a>
+                  </Link>
                 </p>
               </div>
             </form>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
