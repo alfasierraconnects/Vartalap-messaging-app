@@ -14,14 +14,12 @@ const AuthContextProvider = (props) => {
   }, []);
 
   const checkUserStatus = async () => {
-    setLoading(true);
     try {
       let accountDetails = await account.get();
       setUser(accountDetails);
     } catch (error) {
       // console.log(error);
     }
-    setLoading(false);
   };
 
   const login = (loginData) => {
