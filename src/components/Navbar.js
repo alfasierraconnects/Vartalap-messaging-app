@@ -1,6 +1,8 @@
 import React from "react";
+import { useAuth } from "../appwrite/authContext";
 
 const Navbar = () => {
+  const { logout } = useAuth();
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed w-full top-0">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -24,8 +26,9 @@ const Navbar = () => {
           className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
           aria-controls="navbar-user"
           aria-expanded="false"
+          onClick={() => logout()}
         >
-          LOGIN
+          LOGOUT
         </button>
       </div>
     </nav>

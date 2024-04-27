@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { account } from "./appwriteConfig";
 import { ID } from "appwrite";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 const AuthContextProvider = (props) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +37,7 @@ const AuthContextProvider = (props) => {
       function (response) {
         console.log(response); // Success
         setUser(response);
+        navigate("/contacts");
       },
       function (error) {
         console.log(error); // Failure
@@ -43,13 +46,26 @@ const AuthContextProvider = (props) => {
     setLoading(false);
   };
 
+  const logout = () => {
+    const promise = account.deleteSession(user.$id);
+
+    promise.then(
+      function (response) {
+        console.log(response);
+        navigate("/");
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+  };
+
   const signup = (signupData) => {
-    // console.log(signupData.email, signupData.password1, signupData.phoneNumber);
     const promise = account.create(
       ID.unique(),
       signupData.email,
       signupData.password1,
-      signupData.phoneNumber
+      signupData.name
     );
 
     promise.then(
@@ -63,7 +79,7 @@ const AuthContextProvider = (props) => {
     );
   };
 
-  const userContext = { user, login, signup };
+  const userContext = { user, login, signup, logout };
 
   return (
     <AuthContext.Provider value={userContext}>

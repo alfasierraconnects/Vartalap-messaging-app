@@ -1,21 +1,23 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Homepage from "./pages/Homepage";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
+import Contacts from "./pages/Contacts";
+import Chat from "./pages/Chat";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/home" element={<Homepage />} />
+        <Route path="/chat" element={<Chat />} />
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/contacts" element={<Contacts />}></Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 

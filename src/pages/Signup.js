@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const Signup = () => {
   const [signupData, setSignupData] = useState({
+    name: "",
     email: "",
     password1: "",
     password2: "",
-    phoneNumber: "",
   });
 
   const { signup } = useAuth();
@@ -22,20 +22,23 @@ const Signup = () => {
     e.preventDefault();
 
     // Trim the input values
+    const trimmedName = signupData.name.trim();
     const trimmedEmail = signupData.email.trim();
     const trimmedPassword1 = signupData.password1.trim();
     const trimmedPassword2 = signupData.password2.trim();
-    const trimmedPhoneNumber = signupData.phoneNumber.trim();
 
     // Check if any of the required fields are empty or passwords don't match
     if (
+      trimmedName === "" ||
       trimmedEmail === "" ||
       trimmedPassword1 === "" ||
       trimmedPassword2 === "" ||
-      trimmedPhoneNumber === "" ||
       trimmedPassword1 !== trimmedPassword2
     ) {
       // Provide validation messages to the user
+      if (trimmedName === "") {
+        console.log("Name is required");
+      }
       if (trimmedEmail === "") {
         console.log("Email is required");
       }
@@ -44,9 +47,6 @@ const Signup = () => {
       }
       if (trimmedPassword2 === "") {
         console.log("Confirm password is required");
-      }
-      if (trimmedPhoneNumber === "") {
-        console.log("Phone number is required");
       }
       if (trimmedPassword1 !== trimmedPassword2) {
         console.log("Passwords do not match");
@@ -59,7 +59,7 @@ const Signup = () => {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div className="flex flex-col items-center justify-center pt-20 px-6 py-8 mx-auto h-screen">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center">
@@ -67,6 +67,23 @@ const Signup = () => {
             </h1>
 
             <form onSubmit={onSubmitHandler} className="max-w-sm mx-auto">
+              <div className="mb-5">
+                <label
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your Name
+                </label>
+                <input
+                  onChange={onChangeHandler}
+                  type="name"
+                  id="name"
+                  name="name"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  placeholder="Firstname Lastname"
+                  required
+                />
+              </div>
               <div className="mb-5">
                 <label
                   htmlFor="email"
@@ -114,23 +131,6 @@ const Signup = () => {
                   name="password2"
                   id="password2"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required=""
-                />
-              </div>
-              <div className="mb-5">
-                <label
-                  htmlFor="phoneNumber"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Phone number
-                </label>
-                <input
-                  onChange={onChangeHandler}
-                  type="phoneNumber"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                  placeholder="Your phone number"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
                 />
