@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../appwrite/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -8,7 +8,15 @@ const Login = () => {
     password: "",
   });
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/contacts");
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const onChangeHandler = (e) => {
     const name = e.target.name;

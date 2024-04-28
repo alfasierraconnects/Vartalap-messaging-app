@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../appwrite/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [signupData, setSignupData] = useState({
@@ -10,7 +10,15 @@ const Signup = () => {
     password2: "",
   });
 
-  const { signup } = useAuth();
+  const { signup, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/contacts");
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const onChangeHandler = (e) => {
     const name = e.target.name;

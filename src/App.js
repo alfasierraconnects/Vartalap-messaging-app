@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
 import Contacts from "./pages/Contacts";
 import Chat from "./pages/Chat";
+import PrivateRoutes from "./PrivateRoutes";
 
 const App = () => {
   return (
@@ -12,10 +13,14 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/contacts" element={<Contacts />}></Route>
+          <Route path="/chat" element={<Chat />}>
+            <Route path=":userId" element={<Chat />} />
+          </Route>
+        </Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/contacts" element={<Contacts />}></Route>
       </Routes>
     </>
   );

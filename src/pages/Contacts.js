@@ -1,30 +1,28 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDatabase } from "../appwrite/databaseContext";
+import ContactCard from "../components/ContactCard";
+import { useAuth } from "../appwrite/authContext";
 
 const Contacts = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center pt-20 px-6 py-8 mx-auto h-screen">
-        <div className="flex flex-col gap-2 items-center p-6 w-full max-w-sm border border-gray-200 rounded-lg shadow bg-white  dark:bg-gray-800 dark:border-gray-700">
-          <img
-            className="w-24 h-24 mb-3 rounded-full shadow-lg"
-            src="/docs/images/people/profile-picture-3.jpg"
-            alt="Bonnie"
-          />
-          <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-            Bonnie Green
-          </h5>
+  const { fetchContacts, contacts } = useDatabase();
+  const { user } = useAuth();
 
-          <button
-            onClick={() => {
-              navigate("/chat");
-            }}
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Message
-          </button>
-        </div>
+  useEffect(() => {
+    fetchContacts(user.userId);
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <div className="bg-gray-50 dark:bg-gray-800 min-h-screen">
+      <h1 className="pt-24 py-10 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center">
+        {contacts.length > 0
+          ? "Select a contact to start messaging..."
+          : "No contacts found!"}
+      </h1>
+      <div className="flex flex-col sm:flex-row sm:flex-wrap items-center gap-5 sm:justify-evenly pt-0 p-10 lg:px-12 xl:px-36 mx-auto">
+        {contacts.map((user) => (
+          <ContactCard key={user.userId} user={user} />
+        ))}
       </div>
     </div>
   );
