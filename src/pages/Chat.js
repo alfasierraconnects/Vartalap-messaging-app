@@ -3,13 +3,15 @@ import ChatInput from "../components/ChatInput";
 import ChatBubble from "../components/ChatBubble";
 import { useDatabase } from "../appwrite/databaseContext";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../appwrite/authContext";
 
 const Chat = () => {
+  const { user } = useAuth();
   const { getMessages, messages, getContactDetail, receiver } = useDatabase();
 
   const { receiverId } = useParams();
   useEffect(() => {
-    getMessages();
+    getMessages(user.$id, receiverId);
     getContactDetail(receiverId);
     // eslint-disable-next-line
   }, []);

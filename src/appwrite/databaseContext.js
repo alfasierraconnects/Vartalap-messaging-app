@@ -70,11 +70,15 @@ const DatabaseContextProvider = (props) => {
     );
   };
   /*--------------------------------Get all mesaagaes----------------------------------------------------------------- */
-  const getMessages = () => {
+  const getMessages = (userId, receiverId) => {
+    // console.log(userId, receiverId);
     let promise = databases.listDocuments(DATABASE_ID, MESSAGES_COLLECTION_ID, [
+      Query.or([
+        Query.and([Query.equal("from", userId), Query.equal("to", receiverId)]),
+        Query.and([Query.equal("from", receiverId), Query.equal("to", userId)]),
+      ]),
       Query.orderDesc("$createdAt"),
     ]);
-
     promise.then(
       function (response) {
         // console.log("created new message");
