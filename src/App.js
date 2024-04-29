@@ -16,7 +16,7 @@ const App = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/contacts" element={<Contacts />}></Route>
           <Route path="/chat" element={<Chat />}>
-            <Route path=":userId" element={<Chat />} />
+            <Route path=":receiverId" element={<Chat />} />
           </Route>
         </Route>
         <Route path="/login" element={<Login />}></Route>

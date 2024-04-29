@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ChatInput from "../components/ChatInput";
 import ChatBubble from "../components/ChatBubble";
+import { useDatabase } from "../appwrite/databaseContext";
+import { useParams } from "react-router-dom";
 
 const Chat = () => {
+  const { getMessages, messages, getContactDetail, receiver } = useDatabase();
+
+  const { receiverId } = useParams();
+  useEffect(() => {
+    getMessages();
+    getContactDetail(receiverId);
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <div className="flex flex-col-reverse gap-4 py-4 px-10 w-[66%] mx-auto h-screen bg-gray-800">
-      <ChatInput />
-      <ChatBubble />
-      <ChatBubble />
+    <div className="h-screen bg-gray-800">
+      <div className="flex flex-col-reverse gap-4 h-full pt-20 p-2 px-4 lg:px-24 xl:px-36 mx-auto overflow-y-scroll ">
+        <ChatInput />
+        {messages.map((message) => (
+          <ChatBubble key={message.$id} message={message} receiver={receiver} />
+        ))}
+      </div>
     </div>
   );
 };

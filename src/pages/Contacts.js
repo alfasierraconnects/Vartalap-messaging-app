@@ -8,7 +8,7 @@ const Contacts = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchContacts(user.userId);
+    fetchContacts(user.$id);
     // eslint-disable-next-line
   }, []);
 
