@@ -7,12 +7,23 @@ import { useAuth } from "../appwrite/authContext";
 
 const Chat = () => {
   const { user } = useAuth();
-  const { getMessages, messages, getContactDetail, receiver } = useDatabase();
+  const {
+    getMessages,
+    messages,
+    getContactDetail,
+    receiver,
+    subscribeRealTime,
+  } = useDatabase();
 
   const { receiverId } = useParams();
   useEffect(() => {
     getMessages(user.$id, receiverId);
     getContactDetail(receiverId);
+    const unsubscribe = subscribeRealTime(); // Subscribe to real-time updates
+
+    return () => {
+      unsubscribe(); // Unsubscribe from real-time updates when component unmounts
+    };
     // eslint-disable-next-line
   }, []);
 

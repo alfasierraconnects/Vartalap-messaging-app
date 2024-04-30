@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { databases } from "./appwriteConfig";
+import client, { databases } from "./appwriteConfig";
 import { ID, Query } from "appwrite";
 
 const DatabaseContext = createContext();
@@ -13,6 +13,41 @@ const DatabaseContextProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState([]);
+
+  /*-----------------------------Subscribing to realtime events---------------------------------------------------- */
+  const subscribeRealTime = () => {
+    const unsubscribe = client.subscribe(
+      `databases.${DATABASE_ID}.collections.${MESSAGES_COLLECTION_ID}.documents`,
+      (response) => {
+        console.log(response);
+        // Handle create event
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.create"
+          )
+        ) {
+          // console.log(response.payload);
+          setMessages((prevMessages) => [response.payload, ...prevMessages]);
+        }
+
+        // Handle delete event
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.delete"
+          )
+        ) {
+          // console.log(response.payload);
+          // console.log(messageId);
+          const messageId = response.payload.$id;
+          setMessages((prevMessages) =>
+            prevMessages.filter((message) => message.$id !== messageId)
+          );
+        }
+      }
+    );
+
+    return unsubscribe;
+  };
 
   /*-----------------------------fetch all contacts---------------------------------------------------------------- */
   const fetchContacts = (userId) => {
@@ -103,7 +138,7 @@ const DatabaseContextProvider = (props) => {
     promise.then(
       function (response) {
         // console.log(response);
-        setMessages((prevMessages) => [response, ...prevMessages]);
+        // setMessages((prevMessages) => [response, ...prevMessages]);
       },
       function (error) {
         console.log(error);
@@ -123,9 +158,9 @@ const DatabaseContextProvider = (props) => {
     promise.then(
       function (response) {
         // console.log(response); // Success
-        setMessages((prevMessages) =>
-          prevMessages.filter((message) => message.$id !== messageId)
-        );
+        // setMessages((prevMessages) =>
+        //   prevMessages.filter((message) => message.$id !== messageId)
+        // );
       },
       function (error) {
         console.log(error); // Failure
@@ -134,6 +169,7 @@ const DatabaseContextProvider = (props) => {
   };
 
   const contextValue = {
+    subscribeRealTime,
     fetchContacts,
     contacts,
     addContact,
@@ -142,6 +178,7 @@ const DatabaseContextProvider = (props) => {
     addMessage,
     getMessages,
     messages,
+    setMessages,
     deleteMessage,
   };
 

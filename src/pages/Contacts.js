@@ -4,11 +4,12 @@ import ContactCard from "../components/ContactCard";
 import { useAuth } from "../appwrite/authContext";
 
 const Contacts = () => {
-  const { fetchContacts, contacts } = useDatabase();
+  const { fetchContacts, contacts, setMessages } = useDatabase();
   const { user } = useAuth();
 
   useEffect(() => {
     fetchContacts(user.$id);
+    setMessages([]);
     // eslint-disable-next-line
   }, []);
 
