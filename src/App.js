@@ -6,10 +6,13 @@ import Navbar from "./components/Navbar";
 import Contacts from "./pages/Contacts";
 import Chat from "./pages/Chat";
 import PrivateRoutes from "./PrivateRoutes";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <>
+      <ToastContainer autoClose={3000} theme="dark" />
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />

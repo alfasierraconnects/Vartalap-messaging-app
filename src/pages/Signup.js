@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../appwrite/authContext";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [signupData, setSignupData] = useState({
@@ -40,24 +41,28 @@ const Signup = () => {
       trimmedName === "" ||
       trimmedEmail === "" ||
       trimmedPassword1 === "" ||
+      trimmedPassword1.length < 8 ||
       trimmedPassword2 === "" ||
       trimmedPassword1 !== trimmedPassword2
     ) {
       // Provide validation messages to the user
       if (trimmedName === "") {
-        console.log("Name is required");
+        toast.error("Name is required");
       }
       if (trimmedEmail === "") {
-        console.log("Email is required");
+        toast.error("Email is required");
       }
       if (trimmedPassword1 === "") {
-        console.log("Password is required");
+        toast.error("Password is required");
+      }
+      if (trimmedPassword1.length < 8) {
+        toast.error("Password should be of atleast 8 characters");
       }
       if (trimmedPassword2 === "") {
-        console.log("Confirm password is required");
+        toast.error("Confirm password is required");
       }
       if (trimmedPassword1 !== trimmedPassword2) {
-        console.log("Passwords do not match");
+        toast.error("Passwords do not match");
       }
     } else {
       // If validation passes, call the signup function
@@ -87,7 +92,7 @@ const Signup = () => {
                   type="name"
                   id="name"
                   name="name"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
                   placeholder="Firstname Lastname"
                   required
                 />
@@ -104,7 +109,7 @@ const Signup = () => {
                   type="email"
                   id="email"
                   name="email"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
                   placeholder="name@email.com"
                   required
                 />
@@ -122,7 +127,7 @@ const Signup = () => {
                   name="password1"
                   id="password1"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
                   required=""
                 />
               </div>
@@ -139,7 +144,7 @@ const Signup = () => {
                   name="password2"
                   id="password2"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
                   required=""
                 />
               </div>
@@ -179,7 +184,7 @@ const Signup = () => {
                     to="/login"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-2"
                   >
-                    Log in
+                    Sign in
                   </Link>
                 </p>
               </div>

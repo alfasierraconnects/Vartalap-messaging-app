@@ -3,6 +3,7 @@ import { account } from "./appwriteConfig";
 import { ID } from "appwrite";
 import { useNavigate } from "react-router-dom";
 import { useDatabase } from "./databaseContext";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -43,12 +44,13 @@ const AuthContextProvider = (props) => {
 
     promise.then(
       function (response) {
-        console.log(response); // Success
+        // console.log(response); // Success
         setUser(response);
         navigate("/contacts");
       },
       function (error) {
-        console.log(error); // Failure
+        // console.log(error); // Failure
+        toast.error("Invalid Credentials! Please enter correct details");
       }
     );
     setLoading(false);
@@ -65,7 +67,8 @@ const AuthContextProvider = (props) => {
         setUser(null);
       },
       function (error) {
-        console.log(error);
+        // console.log(error);
+        toast.error("Unable to logout!");
       }
     );
   };
@@ -82,12 +85,14 @@ const AuthContextProvider = (props) => {
 
     promise.then(
       function (response) {
-        console.log(response); // Success
+        // console.log(response); // Success
+        toast.success("Welcome to Vartalap!");
         addContact({ userId: response.$id, userName: response.name });
         login({ email: signupData.email, password: signupData.password1 });
       },
       function (error) {
-        console.log(error); // Failure
+        // console.log(error); // Failure
+        toast.error("Unable to signup user!");
       }
     );
   };

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import client, { databases } from "./appwriteConfig";
 import { ID, Query } from "appwrite";
+import { toast } from "react-toastify";
 
 const DatabaseContext = createContext();
 export const useDatabase = () => useContext(DatabaseContext);
@@ -19,7 +20,7 @@ const DatabaseContextProvider = (props) => {
     const unsubscribe = client.subscribe(
       `databases.${DATABASE_ID}.collections.${MESSAGES_COLLECTION_ID}.documents`,
       (response) => {
-        console.log(response);
+        // console.log(response);
         // Handle create event
         if (
           response.events.includes(
@@ -50,20 +51,18 @@ const DatabaseContextProvider = (props) => {
   };
 
   /*-----------------------------fetch all contacts---------------------------------------------------------------- */
-  const fetchContacts = (userId) => {
+  const fetchContacts = () => {
     setLoading(true);
     const promise = databases.listDocuments(DATABASE_ID, USERS_COLLECTION_ID);
 
     promise.then(
       function (response) {
         // console.log(response);
-        // console.log(response.documents);
-        setContacts(
-          response.documents.filter((user) => user.userId !== userId)
-        );
+        setContacts(response.documents);
       },
       function (error) {
-        console.log(error);
+        // console.log(error);
+        toast.error("Unable to fetch Contacts!");
       }
     );
     setLoading(false);
@@ -80,10 +79,11 @@ const DatabaseContextProvider = (props) => {
 
     promise.then(
       function (response) {
-        console.log(response); // Success
+        // console.log(response); // Success
       },
       function (error) {
-        console.log(error); // Failure
+        // console.log(error); // Failure
+        toast.error("Unable to add Contact!");
       }
     );
   };
@@ -100,7 +100,8 @@ const DatabaseContextProvider = (props) => {
         setReceiver(response.documents[0]);
       },
       function (error) {
-        console.log(error); // Failure
+        // console.log(error); // Failure
+        toast.error("Unable to get Contact Details!");
       }
     );
   };
@@ -121,7 +122,8 @@ const DatabaseContextProvider = (props) => {
         setMessages(response.documents);
       },
       function (error) {
-        console.log(error);
+        // console.log(error);
+        toast.error("Error loading Messages!");
       }
     );
   };
@@ -141,7 +143,8 @@ const DatabaseContextProvider = (props) => {
         // setMessages((prevMessages) => [response, ...prevMessages]);
       },
       function (error) {
-        console.log(error);
+        // console.log(error);
+        toast.error("Unable to send message!");
       }
     );
   };
@@ -161,9 +164,11 @@ const DatabaseContextProvider = (props) => {
         // setMessages((prevMessages) =>
         //   prevMessages.filter((message) => message.$id !== messageId)
         // );
+        toast.success("Message deleted!");
       },
       function (error) {
-        console.log(error); // Failure
+        // console.log(error); // Failure
+        toast.error("Unable to delete message!");
       }
     );
   };

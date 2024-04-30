@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { useDatabase } from "../appwrite/databaseContext";
 import ContactCard from "../components/ContactCard";
-import { useAuth } from "../appwrite/authContext";
 
 const Contacts = () => {
   const { fetchContacts, contacts, setMessages } = useDatabase();
-  const { user } = useAuth();
 
   useEffect(() => {
-    fetchContacts(user.$id);
+    fetchContacts();
     setMessages([]);
     // eslint-disable-next-line
   }, []);
