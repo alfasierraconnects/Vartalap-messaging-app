@@ -12,14 +12,24 @@ const ChatInput = () => {
   const { addMessage } = useDatabase();
   const { receiverId } = useParams();
 
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-IN", options);
+  };
+
+  const formatTime = (dateString) => {
+    const options = { hour: "2-digit", minute: "2-digit", hour12: false };
+    return new Date(dateString).toLocaleTimeString("en-IN", options);
+  };
+
   const sendMessage = () => {
     const currentDate = new Date();
     const messageObject = {
       message: message,
       from: user.$id,
       to: receiverId,
-      date: currentDate.toLocaleDateString(),
-      time: currentDate.toLocaleTimeString(),
+      date: formatDate(currentDate),
+      time: formatTime(currentDate),
     };
     // console.log("Message object:", messageObject);
     addMessage(messageObject);

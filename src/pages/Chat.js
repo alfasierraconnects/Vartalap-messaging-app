@@ -14,8 +14,8 @@ const Chat = () => {
     receiver,
     subscribeRealTime,
   } = useDatabase();
-
   const { receiverId } = useParams();
+
   useEffect(() => {
     getMessages(user.$id, receiverId);
     getContactDetail(receiverId);
@@ -27,12 +27,28 @@ const Chat = () => {
     // eslint-disable-next-line
   }, []);
 
+  // Extract unique dates from messages
+  const uniqueDates = Array.from(
+    new Set(messages.map((message) => message.date))
+  );
+
   return (
     <div className="h-screen bg-gray-800">
       <div className="flex flex-col-reverse gap-4 h-full pt-20 p-2 px-4 lg:px-24 xl:px-36 mx-auto overflow-y-scroll ">
         <ChatInput />
-        {messages.map((message) => (
-          <ChatBubble key={message.$id} message={message} receiver={receiver} />
+        {uniqueDates.map((date) => (
+          <React.Fragment key={date}>
+            {messages
+              .filter((message) => message.date === date)
+              .map((filteredMessage) => (
+                <ChatBubble
+                  key={filteredMessage.$id}
+                  message={filteredMessage}
+                  receiver={receiver}
+                />
+              ))}
+            <div className="text-gray-400 text-center">{date}</div>
+          </React.Fragment>
         ))}
       </div>
     </div>

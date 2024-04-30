@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../appwrite/authContext";
 import { PiChatsBold } from "react-icons/pi";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -9,12 +9,27 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Add event listener when component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState);
   };
-
-  // console.log(user);
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed w-full top-0">
@@ -50,6 +65,7 @@ const Navbar = () => {
               <FaRegUserCircle className="text-3xl" />
             </button>
             <div
+              ref={dropdownRef}
               className={`z-50 ${
                 isDropdownOpen ? "block" : "hidden"
               } absolute -top-3 right-1 sm:-top-1 sm:right-9 my-4 overflow-hidden text-base bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
@@ -63,9 +79,7 @@ const Navbar = () => {
                   {user.email}
                 </span>
                 <button
-                  onClick={() => {
-                    toggleDropdown();
-                  }}
+                  onClick={toggleDropdown}
                   className="text-lg p-2 absolute top-0 right-0"
                 >
                   <IoCloseSharp />
